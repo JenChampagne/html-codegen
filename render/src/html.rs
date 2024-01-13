@@ -17,7 +17,7 @@ use std::fmt::{Result, Write};
 ///             <body />
 ///         </html>
 ///     </>
-/// };
+/// }.unwrap();
 /// # assert_eq!(result, "<!DOCTYPE html><html><body></body></html>");
 /// ```
 #[derive(Debug, Clone)]

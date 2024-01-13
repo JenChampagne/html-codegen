@@ -23,7 +23,7 @@ use syn::parse_macro_input;
 /// ```rust
 /// # use pretty_assertions::assert_eq;
 /// # use render_macros::html;
-/// let rendered = html! { <div id={"main"}>{"Hello"}</div> };
+/// let rendered = html! { <div id={"main"}>{"Hello"}</div> }.unwrap();
 /// assert_eq!(rendered, r#"<div id="main">Hello</div>"#);
 /// ```
 ///
@@ -43,7 +43,7 @@ use syn::parse_macro_input;
 ///     }
 /// }
 ///
-/// let rendered = html! { <Heading title={"Hello world!"} /> };
+/// let rendered = html! { <Heading title={"Hello world!"} /> }.unwrap();
 ///
 /// assert_eq!(rendered, r#"<h1>Hello world!</h1>"#);
 /// ```
@@ -55,7 +55,7 @@ use syn::parse_macro_input;
 /// # use pretty_assertions::assert_eq;
 /// let rendered = html! {
 ///     <div id={"main"} />
-/// };
+/// }.unwrap();
 ///
 /// assert_eq!(rendered, r#"<div id="main"></div>"#);
 /// ```
@@ -67,7 +67,7 @@ use syn::parse_macro_input;
 /// # use pretty_assertions::assert_eq;
 /// let rendered = html! {
 ///     <div data-testid={"sometestid"}></div>
-/// };
+/// }.unwrap();
 ///
 /// assert_eq!(rendered, r#"<div data-testid="sometestid"></div>"#);
 /// ```
@@ -93,7 +93,7 @@ use syn::parse_macro_input;
 ///
 /// let rendered = html! {
 ///     <div class />
-/// };
+/// }.unwrap();
 ///
 /// assert_eq!(rendered, r#"<div class="someclass"></div>"#);
 /// ```

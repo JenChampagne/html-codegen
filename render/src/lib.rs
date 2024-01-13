@@ -49,7 +49,7 @@
 //!   </div>
 //! };
 //!
-//! assert_eq!(tree.render(), "<div><h1>Hello!</h1><p>Hello world!</p></div>");
+//! assert_eq!(tree.render().unwrap(), "<div><h1>Hello!</h1><p>Hello world!</p></div>");
 //! ```
 //!
 //! Because this is so common, there's another macro called `html!` that calls `rsx!` to generate
@@ -71,7 +71,7 @@
 //!     <p>{"<Hello />"}</p>
 //!     <p>{raw!("<Hello />")}</p>
 //!   </div>
-//! };
+//! }.unwrap();
 //!
 //! assert_eq!(tree, "<div><p>&lt;Hello /&gt;</p><p><Hello /></p></div>");
 //! ```
@@ -96,7 +96,7 @@
 //!
 //! let rendered_html = html! {
 //!   <Heading title={"Hello world!"} />
-//! };
+//! }.unwrap();
 //!
 //! assert_eq!(rendered_html, r#"<h1 class="title">Hello world!</h1>"#);
 //! ```
@@ -142,7 +142,7 @@
 //!
 //! // This can be a route in Rocket, the web framework,
 //! // for instance.
-//! pub fn some_page(user_name: &str) -> String {
+//! pub fn some_page(user_name: &str) -> Result<String, std::fmt::Error> {
 //!     html! {
 //!       <Page title={"Home"}>
 //!         {format!("Welcome, {}", user_name)}
@@ -151,7 +151,7 @@
 //! }
 //!
 //! # use pretty_assertions::assert_eq;
-//! # let actual = some_page("Gal");
+//! # let actual = some_page("Gal").unwrap();
 //! # let expected = concat!(
 //! #     "<!DOCTYPE html>",
 //! #     "<html>",

@@ -14,7 +14,7 @@ use std::fmt::{Result, Write};
 ///         <a />
 ///         <b />
 ///     </>
-/// };
+/// }.unwrap();
 /// assert_eq!(result, "<a></a><b></b>");
 /// ```
 #[derive(Debug, Clone)]

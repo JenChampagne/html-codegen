@@ -8,7 +8,7 @@ fn ui() {
 fn works_with_dashes() {
     use pretty_assertions::assert_eq;
 
-    let value = render::html! { <div data-id={"myid"} /> };
+    let value = render::html! { <div data-id={"myid"} /> }.unwrap();
     assert_eq!(value, r#"<div data-id="myid"></div>"#);
 }
 
@@ -19,7 +19,8 @@ fn works_with_raw() {
 
     let actual = html! {
         <div>{raw!("<Hello />")}</div>
-    };
+    }
+    .unwrap();
 
     assert_eq!(actual, "<div><Hello /></div>");
 }
@@ -30,7 +31,8 @@ fn works_with_htmx_ident() {
 
     let actual = render::html! {
         <input hx-get={"url"} />
-    };
+    }
+    .unwrap();
 
     assert_eq!(actual, r#"<input hx-get="url"/>"#);
 }
@@ -41,7 +43,8 @@ fn works_with_raw_ident() {
 
     let actual = render::html! {
         <input r#type={"text"} />
-    };
+    }
+    .unwrap();
 
     assert_eq!(actual, r#"<input type="text"/>"#);
 }
@@ -51,9 +54,12 @@ fn works_with_keywords() {
     use pretty_assertions::assert_eq;
     use render::html;
 
-    assert_eq!(html! { <input type={"text"} /> }, r#"<input type="text"/>"#);
     assert_eq!(
-        html! { <label for={"me"} /> },
+        html! { <input type={"text"} /> }.unwrap(),
+        r#"<input type="text"/>"#
+    );
+    assert_eq!(
+        html! { <label for={"me"} /> }.unwrap(),
         r#"<label for="me"></label>"#
     );
 }
@@ -63,7 +69,7 @@ fn selfclosing_void_element() {
     use pretty_assertions::assert_eq;
     use render::html;
 
-    assert_eq!(html! { <hr /> }, r#"<hr/>"#);
+    assert_eq!(html! { <hr /> }.unwrap(), r#"<hr/>"#);
 }
 
 #[test]
@@ -77,7 +83,8 @@ fn element_ordering() {
         <li>{"2"}</li>
         <li>{"3"}</li>
       </ul>
-    };
+    }
+    .unwrap();
 
     assert_eq!(actual, "<ul><li>1</li><li>2</li><li>3</li></ul>");
 
@@ -91,7 +98,8 @@ fn element_ordering() {
           <li>{"3"}</li>
         </ul>
       </div>
-    };
+    }
+    .unwrap();
 
     assert_eq!(
         deep,
@@ -106,13 +114,15 @@ fn childless_non_selfclosing_tag() {
 
     let actual = html! {
         <textarea></textarea>
-    };
+    }
+    .unwrap();
 
     assert_eq!(actual, "<textarea></textarea>");
 
     let actual = html! {
         <script></script>
-    };
+    }
+    .unwrap();
 
     assert_eq!(actual, "<script></script>");
 }
@@ -134,8 +144,8 @@ fn some_none() {
         }
     }
 
-    assert_eq!(html! { <Answer a={42} /> }, "Yes");
-    assert_eq!(html! { <Answer a={44} /> }, "");
+    assert_eq!(html! { <Answer a={42} /> }.unwrap(), "Yes");
+    assert_eq!(html! { <Answer a={44} /> }.unwrap(), "");
 }
 
 #[test]
@@ -153,7 +163,7 @@ fn owned_string() {
     }
 
     assert_eq!(
-        html! { <Welcome kind={"alien"} name={"Yoda"} /> },
+        html! { <Welcome kind={"alien"} name={"Yoda"} /> }.unwrap(),
         r#"<h1 class="alien-title">Hello, Yoda</h1>"#
     );
 }
@@ -174,7 +184,8 @@ fn cow_str() {
                 <p>{Cow::<'_, str>::Borrowed(&owned1)}</p>
                 <p>{Cow::<'_, str>::Owned(owned2)}</p>
             </div>
-        },
+        }
+        .unwrap(),
         r#"<div><p>Static</p><p>Borrowed from owned</p><p>Owned</p></div>"#,
     );
 }
@@ -186,7 +197,7 @@ fn number() {
 
     let num = 42;
 
-    assert_eq!(html! { <p>{num}</p> }, "<p>42</p>")
+    assert_eq!(html! { <p>{num}</p> }.unwrap(), "<p>42</p>")
 }
 
 #[test]
@@ -206,7 +217,8 @@ fn vec() {
                         .collect::<Vec<_>>()
                 }
             </ul>
-        },
+        }
+        .unwrap(),
         "<ul><li>Mouse</li><li>Rat</li><li>Hamster</li></ul>"
     )
 }
@@ -246,7 +258,8 @@ mod kaki {
           <Page title={"Home"}>
             {format!("Welcome, {}", "Gal")}
           </Page>
-        };
+        }
+        .unwrap();
         let expected = concat!(
             "<!DOCTYPE html>",
             "<html>",
@@ -268,7 +281,8 @@ mod kaki {
           <ExternalPage title={"Home"} subtitle={"Foo"}>
             {format!("Welcome, {}", "Gal")}
           </ExternalPage>
-        };
+        }
+        .unwrap();
 
         let expected = concat!(
             "<!DOCTYPE html>",
