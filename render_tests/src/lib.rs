@@ -25,6 +25,17 @@ fn works_with_raw() {
 }
 
 #[test]
+fn works_with_htmx_ident() {
+    use pretty_assertions::assert_eq;
+
+    let actual = render::html! {
+        <input hx-get={"url"} />
+    };
+
+    assert_eq!(actual, r#"<input hx-get="url"/>"#);
+}
+
+#[test]
 fn works_with_raw_ident() {
     use pretty_assertions::assert_eq;
 
