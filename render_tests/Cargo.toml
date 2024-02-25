@@ -1,10 +1,10 @@
 [package]
 name = "render_tests"
-version = "0.3.1"
-authors = ["Gal Schlezinger <gal@spitfire.co.il>"]
-edition = "2018"
+version = "0.4.0"
+authors = ["Gal Schlezinger <gal@spitfire.co.il>", "Jenifer Champagne <jen@iferc.ca>"]
+edition = "2021"
 publish = false
-repository = "https://github.com/Schniz/render.rs"
+repository = "https://github.com/JenChampagne/render.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

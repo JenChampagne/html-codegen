@@ -1,11 +1,11 @@
 [package]
 name = "render_macros"
-version = "0.3.1"
-authors = ["Gal Schlezinger <gal@spitfire.co.il>"]
-edition = "2018"
+version = "0.4.0"
+authors = ["Gal Schlezinger <gal@spitfire.co.il>", "Jenifer Champagne <jen@iferc.ca>"]
+edition = "2021"
 description = "The macros needed for `render`"
 readme = "../README.md"
-repository = "https://github.com/Schniz/render.rs"
+repository = "https://github.com/JenChampagne/render.rs"
 keywords = ["macro"]
 categories = []
 license = "MIT"
@@ -22,5 +22,5 @@ proc-macro2 = "1.0"
 proc-macro-error = "1.0"
 
 [dev-dependencies]
-render = { path = "../render", version = "0.3" }
+render = { path = "../render", version = "0.4" }
 pretty_assertions = "1.4"

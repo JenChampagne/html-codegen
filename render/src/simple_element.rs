@@ -125,7 +125,7 @@ fn write_attributes<'a, W: Write>(attributes: Attributes<'a>, writer: &mut W) ->
     match attributes {
         None => Ok(()),
         Some(attributes) => {
-            for (key, maybe_value) in attributes {
+            for (key, maybe_value) in attributes.iter() {
                 match maybe_value {
                     AV::Some(value) => {
                         write!(writer, " {key}=\"")?;
