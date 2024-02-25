@@ -4,7 +4,25 @@ use std::borrow::Cow;
 use std::collections::HashMap;
 use std::fmt::{Result, Write};
 
-type AV<'a> = Option<Cow<'a, str>>;
+#[derive(Clone, Debug)]
+pub enum AV<'a> {
+    None,
+    Some(Cow<'a, str>),
+}
+
+impl<'a> From<AV<'a>> for Option<Cow<'a, str>> {
+    fn from(value: AV<'a>) -> Self {
+        match value {
+            AV::None => None,
+
+            AV::Some(x) => Some(x),
+
+            AV::SomeRaw(Raw(x)) => Some(Cow::Borrowed(x)),
+
+            AV::Short => None,
+        }
+    }
+}
 
 pub trait ToAttribute<'a> {
     fn from_value(self) -> AV<'a>;
@@ -12,37 +30,56 @@ pub trait ToAttribute<'a> {
 
 impl<'a> ToAttribute<'a> for Option<Cow<'a, str>> {
     fn from_value(self) -> AV<'a> {
-        self
+        match self {
+            None => AV::None,
+            Some(x) => AV::Some(x),
+        }
+    }
+}
+
+impl<'a> ToAttribute<'a> for bool {
+    fn from_value(self) -> AV<'a> {
+        if self {
+            AV::Short
+        } else {
+            AV::None
+        }
     }
 }
 
 impl<'a> ToAttribute<'a> for () {
     fn from_value(self) -> AV<'a> {
-        None
+        AV::None
     }
 }
 
 impl<'a> ToAttribute<'a> for String {
     fn from_value(self) -> AV<'a> {
-        Some(Cow::Owned(self))
+        AV::Some(Cow::Owned(self))
     }
 }
 
 impl<'a> ToAttribute<'a> for &'a str {
     fn from_value(self) -> AV<'a> {
-        Some(Cow::Borrowed(self))
+        AV::Some(Cow::Borrowed(self))
     }
 }
 
 impl<'a> ToAttribute<'a> for Option<&'a str> {
     fn from_value(self) -> AV<'a> {
-        self.map(|v| Cow::Borrowed(v))
+        match self {
+            None => AV::None,
+            Some(x) => AV::Some(Cow::Borrowed(x)),
+        }
     }
 }
 
 impl<'a> ToAttribute<'a> for Option<String> {
     fn from_value(self) -> AV<'a> {
-        self.map(|v| Cow::Owned(v))
+        match self {
+            None => AV::None,
+            Some(x) => AV::Some(Cow::Owned(x)),
+        }
     }
 }
 
@@ -51,17 +88,17 @@ macro_rules! impl_primitive {
         $(
             impl<'a> ToAttribute<'a> for $num {
                 fn from_value(self) -> AV<'a> {
-                    Some(Cow::Owned(self.to_string()))
+                    AV::Some(Cow::Owned(self.to_string()))
                 }
             }
         )+
     };
 }
-impl_primitive![u8, u16, u32, u64, i8, i16, i32, i64, f32, f64, bool];
+impl_primitive![u8, u16, u32, u64, i8, i16, i32, i64, f32, f64];
 
 impl<'a> ToAttribute<'a> for Cow<'a, str> {
     fn from_value(self) -> AV<'a> {
-        Some(self)
+        AV::Some(self)
     }
 }
 

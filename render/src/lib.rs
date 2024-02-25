@@ -176,5 +176,5 @@ pub use self::render::Render;
 pub use fragment::Fragment;
 pub use render_macros::{component, html, rsx};
 pub use simple_element::SimpleElement;
-pub use simple_element::ToAttribute;
+pub use simple_element::{ToAttribute, AV};
 pub use text_element::Raw;
