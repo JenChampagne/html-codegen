@@ -137,7 +137,7 @@ impl<'a> ToTokens for SimpleElementAttributes<'a> {
                 .collect();
 
             let hashmap_declaration = quote! {{
-                let mut hm = std::collections::HashMap::<&str, ::render::AV<'_>>::new();
+                let mut hm = ::render::OrderedHashMap::<&str, ::render::AV<'_>>::new();
                 #(#attrs)*
                 Some(hm)
             }};

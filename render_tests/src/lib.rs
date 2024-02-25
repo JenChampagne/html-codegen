@@ -21,8 +21,10 @@ fn maintains_valid_urls_with_raw_attribute() {
 fn works_with_dashes() {
     use pretty_assertions::assert_eq;
 
-    let value = render::html! { <div data-id={"myid"} /> }.unwrap();
-    assert_eq!(value, r#"<div data-id="myid"></div>"#);
+    let value =
+        render::html! { <div data-id={"myid"} hx-get={"x"} checked={false} unchecked={true} /> }
+            .unwrap();
+    assert_eq!(value, r#"<div data-id="myid" hx-get="x" unchecked></div>"#);
 }
 
 #[test]
@@ -256,7 +258,7 @@ mod kaki {
             <HTML5Doctype />
             <html>
               <head><title>{title}</title></head>
-              <body>
+              <body hx-boost={"true"} hx-swap={"innerHTML"} checked={false}>
                 {children}
               </body>
             </html>
@@ -277,7 +279,7 @@ mod kaki {
             "<!DOCTYPE html>",
             "<html>",
             "<head><title>Home</title></head>",
-            "<body>",
+            r#"<body hx-boost="true" hx-swap="innerHTML">"#,
             "Welcome, Gal",
             "</body>",
             "</html>"

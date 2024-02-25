@@ -1,7 +1,7 @@
 use crate::html_escaping::escape_html;
 use crate::{Raw, Render};
+use ordered_hashmap::OrderedHashMap;
 use std::borrow::Cow;
-use std::collections::HashMap;
 use std::fmt::{Result, Write};
 
 #[derive(Clone, Debug)]
@@ -9,6 +9,7 @@ pub enum AV<'a> {
     None,
     Some(Cow<'a, str>),
     SomeRaw(Raw<'a>),
+    Short,
 }
 
 impl<'a> From<AV<'a>> for Option<Cow<'a, str>> {
@@ -109,7 +110,7 @@ impl<'a> ToAttribute<'a> for Cow<'a, str> {
     }
 }
 
-type Attributes<'a> = Option<HashMap<&'a str, AV<'a>>>;
+type Attributes<'a> = Option<OrderedHashMap<&'a str, AV<'a>>>;
 
 /// Simple HTML element tag
 #[derive(Debug, Clone)]
@@ -123,8 +124,8 @@ pub struct SimpleElement<'a, T: Render> {
 fn write_attributes<'a, W: Write>(attributes: Attributes<'a>, writer: &mut W) -> Result {
     match attributes {
         None => Ok(()),
-        Some(mut attributes) => {
-            for (key, maybe_value) in attributes.drain() {
+        Some(attributes) => {
+            for (key, maybe_value) in attributes {
                 match maybe_value {
                     AV::Some(value) => {
                         write!(writer, " {}=\"", key)?;
@@ -138,7 +139,11 @@ fn write_attributes<'a, W: Write>(attributes: Attributes<'a>, writer: &mut W) ->
                         write!(writer, "\"")?;
                     }
 
-                    _ => {}
+                    AV::Short => {
+                        write!(writer, " {}", key)?;
+                    }
+
+                    AV::None => {}
                 }
             }
             Ok(())

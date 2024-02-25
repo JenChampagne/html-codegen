@@ -13,6 +13,7 @@ license = "MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+ordered_hashmap = "0.0.3"
 render_macros = { path = "../render_macros", version = "0.3.1" }
 
 [dev-dependencies]
