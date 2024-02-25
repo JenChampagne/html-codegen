@@ -5,6 +5,19 @@ fn ui() {
 }
 
 #[test]
+fn maintains_valid_urls_with_raw_attribute() {
+    use pretty_assertions::assert_eq;
+    use render::{html, raw};
+
+    let value = html! { <a href={raw!("https://example.com/home?a=1&b=2&c=3")}>{"x"}</a> }.unwrap();
+
+    assert_eq!(
+        value,
+        r#"<a href="https://example.com/home?a=1&b=2&c=3">x</a>"#
+    );
+}
+
+#[test]
 fn works_with_dashes() {
     use pretty_assertions::assert_eq;
 

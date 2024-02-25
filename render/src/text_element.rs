@@ -22,7 +22,7 @@ impl Render for std::borrow::Cow<'_, str> {
 
 /// A raw (unencoded) html string
 #[derive(Debug, Clone)]
-pub struct Raw<'s>(&'s str);
+pub struct Raw<'s>(pub &'s str);
 
 impl<'s> From<&'s str> for Raw<'s> {
     fn from(s: &'s str) -> Self {

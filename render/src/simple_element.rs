@@ -1,5 +1,5 @@
 use crate::html_escaping::escape_html;
-use crate::Render;
+use crate::{Raw, Render};
 use std::borrow::Cow;
 use std::collections::HashMap;
 use std::fmt::{Result, Write};
@@ -8,6 +8,7 @@ use std::fmt::{Result, Write};
 pub enum AV<'a> {
     None,
     Some(Cow<'a, str>),
+    SomeRaw(Raw<'a>),
 }
 
 impl<'a> From<AV<'a>> for Option<Cow<'a, str>> {
@@ -83,6 +84,12 @@ impl<'a> ToAttribute<'a> for Option<String> {
     }
 }
 
+impl<'s> ToAttribute<'s> for Raw<'s> {
+    fn from_value(self) -> crate::AV<'s> {
+        AV::SomeRaw(self)
+    }
+}
+
 macro_rules! impl_primitive {
     [$($num: ty),+] => {
         $(
@@ -118,10 +125,20 @@ fn write_attributes<'a, W: Write>(attributes: Attributes<'a>, writer: &mut W) ->
         None => Ok(()),
         Some(mut attributes) => {
             for (key, maybe_value) in attributes.drain() {
-                if let Some(value) = maybe_value {
-                    write!(writer, " {}=\"", key)?;
-                    escape_html(&value, writer)?;
-                    write!(writer, "\"")?;
+                match maybe_value {
+                    AV::Some(value) => {
+                        write!(writer, " {}=\"", key)?;
+                        escape_html(&value, writer)?;
+                        write!(writer, "\"")?;
+                    }
+
+                    AV::SomeRaw(Raw(value)) => {
+                        write!(writer, " {}=\"", key)?;
+                        write!(writer, "{}", value)?;
+                        write!(writer, "\"")?;
+                    }
+
+                    _ => {}
                 }
             }
             Ok(())
