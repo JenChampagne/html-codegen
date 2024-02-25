@@ -171,8 +171,8 @@ fn owned_string() {
     #[component]
     fn Welcome<'kind, 'name>(kind: &'kind str, name: &'name str) {
         rsx! {
-            <h1 class={format!("{}-title", kind)}>
-                {format!("Hello, {}", name)}
+            <h1 class={format!("{kind}-title")}>
+                {format!("Hello, {name}")}
             </h1>
         }
     }

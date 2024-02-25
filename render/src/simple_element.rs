@@ -128,19 +128,19 @@ fn write_attributes<'a, W: Write>(attributes: Attributes<'a>, writer: &mut W) ->
             for (key, maybe_value) in attributes {
                 match maybe_value {
                     AV::Some(value) => {
-                        write!(writer, " {}=\"", key)?;
+                        write!(writer, " {key}=\"")?;
                         escape_html(&value, writer)?;
                         write!(writer, "\"")?;
                     }
 
                     AV::SomeRaw(Raw(value)) => {
-                        write!(writer, " {}=\"", key)?;
-                        write!(writer, "{}", value)?;
+                        write!(writer, " {key}=\"")?;
+                        write!(writer, "{value}")?;
                         write!(writer, "\"")?;
                     }
 
                     AV::Short => {
-                        write!(writer, " {}", key)?;
+                        write!(writer, " {key}")?;
                     }
 
                     AV::None => {}

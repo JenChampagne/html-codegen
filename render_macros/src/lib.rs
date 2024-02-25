@@ -137,7 +137,7 @@ pub fn rsx(input: TokenStream) -> TokenStream {
 /// #
 /// #[component]
 /// fn UserFn(name: String) {
-///     rsx! { <div>{format!("Hello, {}", name)}</div> }
+///     rsx! { <div>{format!("Hello, {name}")}</div> }
 /// }
 /// ```
 ///
@@ -159,7 +159,7 @@ pub fn rsx(input: TokenStream) -> TokenStream {
 ///
 /// # #[component]
 /// # fn UserFn(name: String) {
-/// #     rsx! { <div>{format!("Hello, {}", name)}</div> }
+/// #     rsx! { <div>{format!("Hello, {name}")}</div> }
 /// # }
 /// #
 /// # let from_fn = html! {

@@ -145,7 +145,7 @@
 //! pub fn some_page(user_name: &str) -> Result<String, std::fmt::Error> {
 //!     html! {
 //!       <Page title={"Home"}>
-//!         {format!("Welcome, {}", user_name)}
+//!         {format!("Welcome, {user_name}")}
 //!       </Page>
 //!     }
 //! }

@@ -168,7 +168,7 @@ fn Page<'a, Children: Render>(title: &'a str, children: Children) {
 pub fn some_page(user_name: &str) -> String {
     html! {
       <Page title={"Home"}>
-        {format!("Welcome, {}", user_name)}
+        {format!("Welcome, {user_name}")}
       </Page>
     }
 }
