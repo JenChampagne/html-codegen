@@ -4,4 +4,5 @@ members = [
     "render",
     "render_macros",
     "render_tests",
+    "html2rust",
 ]
