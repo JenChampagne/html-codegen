@@ -13,7 +13,7 @@ license = "MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ordered_hashmap = "0.0.3"
+ordered_hash_map = "0.4.0"
 html-codegen-macros = { path = "../html-codegen-macros", version = "0.1.0" }
 
 [dev-dependencies]

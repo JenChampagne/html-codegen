@@ -1,6 +1,6 @@
 use crate::html_escaping::escape_html;
 use crate::{Raw, Render};
-use ordered_hashmap::OrderedHashMap;
+use ordered_hash_map::OrderedHashMap;
 use std::borrow::Cow;
 use std::fmt::{Result, Write};
 

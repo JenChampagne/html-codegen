@@ -1,13 +1,13 @@
 use crate::children::Children;
 use crate::element_attribute::ElementAttribute;
+use ordered_hash_map::OrderedHashSet;
 use proc_macro_error::emit_error;
 use quote::{quote, ToTokens};
-use std::collections::HashSet;
 use syn::ext::IdentExt;
 use syn::parse::{Parse, ParseStream, Result};
 use syn::spanned::Spanned;
 
-pub type Attributes = HashSet<ElementAttribute>;
+pub type Attributes = OrderedHashSet<ElementAttribute>;
 
 #[derive(Default)]
 pub struct ElementAttributes {
@@ -56,7 +56,7 @@ impl ElementAttributes {
 
 impl Parse for ElementAttributes {
     fn parse(input: ParseStream) -> Result<Self> {
-        let mut attributes: HashSet<ElementAttribute> = HashSet::new();
+        let mut attributes: OrderedHashSet<ElementAttribute> = OrderedHashSet::new();
         while input.peek(syn::Ident::peek_any) {
             let attribute = input.parse::<ElementAttribute>()?;
             let ident = attribute.ident();
