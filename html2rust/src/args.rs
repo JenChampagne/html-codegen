@@ -13,6 +13,10 @@ pub struct Args {
     /// Add no mangle declaration for use in FFI/static loading.
     #[clap(short = 'm', long)]
     pub no_mangle: bool,
+
+    /// Add whitespace between elements.
+    #[clap(short = 'w', long)]
+    pub whitespace: bool,
 }
 
 impl Args {

@@ -28,22 +28,32 @@ fn raw_string_escape(input: &str) -> (String, String) {
     }
 }
 
-fn recurse_elements(nodes: Vec<Node>, prefix: &str) -> String {
+fn recurse_elements(nodes: Vec<Node>, prefix: Option<&str>) -> String {
     let mut output = String::new();
     for node in nodes {
         match node {
             Node::Text(text) => {
                 let quotes = raw_string_escape(&text);
 
-                output.push_str(prefix);
+                if let Some(prefix) = prefix {
+                    output.push_str(prefix);
+                }
+
                 output.push('{');
                 output.push_str(&quotes.0);
                 output.push_str(&text);
                 output.push_str(&quotes.1);
-                output.push_str("}\n");
+                output.push_str("}");
+
+                if prefix.is_some() {
+                    output.push_str("\n");
+                }
             }
             Node::Element(element) => {
-                output.push_str(prefix);
+                if let Some(prefix) = prefix {
+                    output.push_str(prefix);
+                }
+
                 output.push_str("<");
                 output.push_str(&element.name);
 
@@ -62,6 +72,7 @@ fn recurse_elements(nodes: Vec<Node>, prefix: &str) -> String {
                 for (key, value) in element.attributes {
                     output.push(' ');
                     output.push_str(&key);
+
                     if let Some(value) = value {
                         let quotes = raw_string_escape(&value);
 
@@ -78,30 +89,55 @@ fn recurse_elements(nodes: Vec<Node>, prefix: &str) -> String {
                 // todo: Confirm whether or not a void element can have children
                 // and if so, how should that be handled here?
                 if let ElementVariant::Void = element.variant {
-                    output.push_str(" />\n");
+                    output.push_str(" />");
                 } else {
-                    output.push_str(">\n");
+                    output.push_str(">");
                 }
 
-                let new_prefix = format!("{prefix}    ");
-                output.push_str(&recurse_elements(element.children, &new_prefix));
+                if prefix.is_some() {
+                    output.push_str("\n");
+                }
+
+                let new_prefix = prefix.clone().map(|prefix| format!("{prefix}    "));
+                output.push_str(&recurse_elements(element.children, new_prefix.as_deref()));
 
                 if let ElementVariant::Normal = element.variant {
-                    output.push_str(prefix);
+                    if let Some(prefix) = prefix {
+                        output.push_str(prefix);
+                    }
+
                     output.push_str("</");
                     output.push_str(&element.name);
-                    output.push_str(">\n");
+                    output.push_str(">");
+
+                    if prefix.is_some() {
+                        output.push_str("\n");
+                    }
                 }
             }
             Node::Comment(comment) => {
-                let indented_comment = comment
+                let indented_comments = comment
                     .lines()
-                    .map(|line| format!("{prefix}// {line}").trim_end().to_string())
-                    .collect::<Vec<String>>()
-                    .join("\n");
+                    .map(|line| {
+                        if let Some(prefix) = prefix {
+                            format!("{prefix}// {line}").trim_end().to_string()
+                        } else {
+                            format!("// {line}").trim_end().to_string()
+                        }
+                    })
+                    .collect::<Vec<String>>();
+
+                let indented_comment = if prefix.is_some() {
+                    indented_comments.join("\n")
+                } else {
+                    indented_comments.join("")
+                };
 
                 output.push_str(&indented_comment);
-                output.push('\n');
+
+                if prefix.is_some() {
+                    output.push('\n');
+                }
             }
         }
     }
@@ -136,7 +172,7 @@ fn main() {
     }
 
     let function_declaration = format!(
-        "pub fn {}() -> Result<String, core::fmt::Error> {{\n    render::html!{{\n",
+        "pub fn {}() -> Result<String, core::fmt::Error> {{\n    render::html! {{\n",
         args.function_name.as_deref().unwrap_or("html")
     );
     output.push_str(function_declaration.as_str());
@@ -148,11 +184,23 @@ fn main() {
         .count()
         != 1
     {
-        output.push_str("        <>\n");
-        output.push_str(&recurse_elements(html.children, "            "));
-        output.push_str("        </>\n");
+        if args.whitespace {
+            output.push_str("        <>\n");
+            output.push_str(&recurse_elements(html.children, Some("            ")));
+            output.push_str("        </>\n");
+        } else {
+            output.push_str("        <>");
+            output.push_str(&recurse_elements(html.children, None));
+            output.push_str("</>");
+        }
     } else {
-        output.push_str(&recurse_elements(html.children, "        "));
+        if args.whitespace {
+            output.push_str(&recurse_elements(html.children, Some("        ")));
+        } else {
+            output.push_str("        <>");
+            output.push_str(&recurse_elements(html.children, None));
+            output.push_str("\n");
+        }
     }
     output.push_str("    }\n}");
 
