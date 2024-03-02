@@ -6,8 +6,8 @@ fn ui() {
 
 #[test]
 fn maintains_valid_urls_with_raw_attribute() {
+    use html_codegen::{html, raw};
     use pretty_assertions::assert_eq;
-    use render::{html, raw};
 
     let value = html! { <a href={raw!("https://example.com/home?a=1&b=2&c=3")}>{"x"}</a> }.unwrap();
 
@@ -22,15 +22,15 @@ fn works_with_dashes() {
     use pretty_assertions::assert_eq;
 
     let value =
-        render::html! { <div data-id={"myid"} hx-get={"x"} checked={false} unchecked={true} /> }
+        html_codegen::html! { <div data-id={"myid"} hx-get={"x"} checked={false} unchecked={true} /> }
             .unwrap();
     assert_eq!(value, r#"<div data-id="myid" hx-get="x" unchecked></div>"#);
 }
 
 #[test]
 fn works_with_raw() {
+    use html_codegen::{html, raw};
     use pretty_assertions::assert_eq;
-    use render::{html, raw};
 
     let actual = html! {
         <div>{raw!("<Hello />")}</div>
@@ -44,7 +44,7 @@ fn works_with_raw() {
 fn works_with_htmx_ident() {
     use pretty_assertions::assert_eq;
 
-    let actual = render::html! {
+    let actual = html_codegen::html! {
         <input hx-get={"url"} />
     }
     .unwrap();
@@ -56,7 +56,7 @@ fn works_with_htmx_ident() {
 fn works_with_raw_ident() {
     use pretty_assertions::assert_eq;
 
-    let actual = render::html! {
+    let actual = html_codegen::html! {
         <input r#type={"text"} />
     }
     .unwrap();
@@ -66,8 +66,8 @@ fn works_with_raw_ident() {
 
 #[test]
 fn works_with_keywords() {
+    use html_codegen::html;
     use pretty_assertions::assert_eq;
-    use render::html;
 
     assert_eq!(
         html! { <input type={"text"} /> }.unwrap(),
@@ -81,16 +81,16 @@ fn works_with_keywords() {
 
 #[test]
 fn selfclosing_void_element() {
+    use html_codegen::html;
     use pretty_assertions::assert_eq;
-    use render::html;
 
     assert_eq!(html! { <hr /> }.unwrap(), r#"<hr/>"#);
 }
 
 #[test]
 fn element_ordering() {
+    use html_codegen::html;
     use pretty_assertions::assert_eq;
-    use render::html;
 
     let actual = html! {
       <ul>
@@ -124,8 +124,8 @@ fn element_ordering() {
 
 #[test]
 fn childless_non_selfclosing_tag() {
+    use html_codegen::html;
     use pretty_assertions::assert_eq;
-    use render::html;
 
     let actual = html! {
         <textarea></textarea>
@@ -144,8 +144,8 @@ fn childless_non_selfclosing_tag() {
 
 #[test]
 fn some_none() {
+    use html_codegen::{component, html, rsx};
     use pretty_assertions::assert_eq;
-    use render::{component, html, rsx};
 
     #[component]
     fn Answer(a: i8) {
@@ -165,8 +165,8 @@ fn some_none() {
 
 #[test]
 fn owned_string() {
+    use html_codegen::{component, html, rsx};
     use pretty_assertions::assert_eq;
-    use render::{component, html, rsx};
 
     #[component]
     fn Welcome<'kind, 'name>(kind: &'kind str, name: &'name str) {
@@ -185,8 +185,8 @@ fn owned_string() {
 
 #[test]
 fn cow_str() {
+    use html_codegen::html;
     use pretty_assertions::assert_eq;
-    use render::html;
     use std::borrow::Cow;
 
     let owned1 = "Borrowed from owned".to_owned();
@@ -207,8 +207,8 @@ fn cow_str() {
 
 #[test]
 fn number() {
+    use html_codegen::html;
     use pretty_assertions::assert_eq;
-    use render::html;
 
     let num = 42;
 
@@ -217,8 +217,8 @@ fn number() {
 
 #[test]
 fn vec() {
+    use html_codegen::html;
     use pretty_assertions::assert_eq;
-    use render::html;
 
     let list = vec!["Mouse", "Rat", "Hamster"];
 
@@ -228,7 +228,7 @@ fn vec() {
                 {
                     list
                         .into_iter()
-                        .map(|text| render::rsx! { <li>{text}</li> })
+                        .map(|text| html_codegen::rsx! { <li>{text}</li> })
                         .collect::<Vec<_>>()
                 }
             </ul>
@@ -240,8 +240,8 @@ fn vec() {
 
 mod kaki {
     // A simple HTML 5 doctype declaration
-    use render::html::HTML5Doctype;
-    use render::{
+    use html_codegen::html::HTML5Doctype;
+    use html_codegen::{
         // A macro to create components
         component,
         // A macro to compose components in JSX fashion
@@ -269,7 +269,7 @@ mod kaki {
     #[test]
     fn test() {
         use pretty_assertions::assert_eq;
-        let actual = render::html! {
+        let actual = html_codegen::html! {
           <Page title={"Home"}>
             {format!("Welcome, {}", "Gal")}
           </Page>
@@ -292,7 +292,7 @@ mod kaki {
         use crate::other::ExternalPage;
         use pretty_assertions::assert_eq;
 
-        let actual = render::html! {
+        let actual = html_codegen::html! {
           <ExternalPage title={"Home"} subtitle={"Foo"}>
             {format!("Welcome, {}", "Gal")}
           </ExternalPage>
@@ -318,8 +318,8 @@ mod kaki {
 /// Module for testing component visibility when imported from other modules.
 
 mod other {
-    use render::html::HTML5Doctype;
-    use render::{component, rsx, Render};
+    use html_codegen::html::HTML5Doctype;
+    use html_codegen::{component, rsx, Render};
 
     #[component]
     pub fn ExternalPage<'title, 'subtitle, Children: Render>(

@@ -40,7 +40,7 @@
 //! ```rust
 //! # use pretty_assertions::assert_eq;
 //!
-//! use render::{rsx, Render};
+//! use html_codegen::{rsx, Render};
 //!
 //! let tree = rsx! {
 //!   <div>
@@ -57,14 +57,14 @@
 //! the `rsx!` macro to compose arbitrary components, and only calling `html!` when you need a
 //! String output, when sending a response or generating a Markdown file.
 //!
-//! In Render, attributes and plain strings are escaped using the `render::html_escaping` module. In order to
+//! In Render, attributes and plain strings are escaped using the `html_codegen::html_escaping` module. In order to
 //! use un-escaped values so you can dangerously insert raw HTML, use the `raw!` macro around your
 //! string:
 //!
 //! ```rust
 //! # use pretty_assertions::assert_eq;
 //!
-//! use render::{html, raw};
+//! use html_codegen::{html, raw};
 //!
 //! let tree = html! {
 //!   <div>
@@ -87,7 +87,7 @@
 //! ```rust
 //! # use pretty_assertions::assert_eq;
 //!
-//! use render::{component, rsx, html};
+//! use html_codegen::{component, rsx, html};
 //!
 //! #[component]
 //! fn Heading<'title>(title: &'title str) {
@@ -112,8 +112,8 @@
 //!
 //! ```rust
 //! // A simple HTML 5 doctype declaration
-//! use render::html::HTML5Doctype;
-//! use render::{
+//! use html_codegen::html::HTML5Doctype;
+//! use html_codegen::{
 //!     // A macro to create components
 //!     component,
 //!     // A macro to compose components in JSX fashion
@@ -174,8 +174,8 @@ mod text_element;
 
 pub use self::render::Render;
 pub use fragment::Fragment;
+pub use html_codegen_macros::{component, html, rsx};
 pub use ordered_hashmap::OrderedHashMap;
-pub use render_macros::{component, html, rsx};
 pub use simple_element::SimpleElement;
 pub use simple_element::{ToAttribute, AV};
 pub use text_element::Raw;

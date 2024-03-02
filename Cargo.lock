@@ -218,6 +218,36 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "95505c38b4572b2d910cecb0281560f54b440a19336cbbcb27bf6ce6adc6f5a8"
 
 [[package]]
+name = "html-codegen"
+version = "0.1.0"
+dependencies = [
+ "html-codegen-macros",
+ "ordered_hashmap",
+ "pretty_assertions",
+]
+
+[[package]]
+name = "html-codegen-macros"
+version = "0.1.0"
+dependencies = [
+ "html-codegen",
+ "pretty_assertions",
+ "proc-macro-error",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.52",
+]
+
+[[package]]
+name = "html-codegen-tests"
+version = "0.1.0"
+dependencies = [
+ "html-codegen",
+ "pretty_assertions",
+ "trybuild",
+]
+
+[[package]]
 name = "html2rust"
 version = "0.1.0"
 dependencies = [
@@ -403,36 +433,6 @@ name = "regex-syntax"
 version = "0.8.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c08c74e62047bb2de4ff487b251e4a92e24f48745648451635cec7d591162d9f"
-
-[[package]]
-name = "render"
-version = "0.4.0"
-dependencies = [
- "ordered_hashmap",
- "pretty_assertions",
- "render_macros",
-]
-
-[[package]]
-name = "render_macros"
-version = "0.4.0"
-dependencies = [
- "pretty_assertions",
- "proc-macro-error",
- "proc-macro2",
- "quote",
- "render",
- "syn 2.0.52",
-]
-
-[[package]]
-name = "render_tests"
-version = "0.4.0"
-dependencies = [
- "pretty_assertions",
- "render",
- "trybuild",
-]
 
 [[package]]
 name = "rustix"

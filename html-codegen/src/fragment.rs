@@ -8,7 +8,7 @@ use std::fmt::{Result, Write};
 ///
 /// ```rust
 /// # use pretty_assertions::assert_eq;
-/// # use render_macros::html;
+/// # use html_codegen_macros::html;
 /// let result = html! {
 ///     <>
 ///         <a />

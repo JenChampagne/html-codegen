@@ -1,8 +1,8 @@
 [workspace]
 resolver = "2"
 members = [
-    "render",
-    "render_macros",
-    "render_tests",
+    "html-codegen",
+    "html-codegen-macros",
+    "tests",
     "html2rust",
 ]

@@ -1,12 +1,12 @@
 [package]
-name = "render"
-version = "0.4.0"
-authors = ["Gal Schlezinger <gal@spitfire.co.il>", "Jenifer Champagne <jen@iferc.ca>"]
+name = "html-codegen"
+version = "0.1.0"
+authors = ["Jenifer Champagne <jen@iferc.ca>"]
 edition = "2021"
 description = "A safe and simple template engine with the ergonomics of JSX"
 readme = "../README.md"
-repository = "https://github.com/JenChampagne/render.rs"
-keywords = ["jsx", "rsx", "html", "render", "template"]
+repository = "https://github.com/JenChampagne/html-codegen"
+keywords = ["jsx", "rsx", "html", "codegen", "template"]
 categories = ["template-engine"]
 license = "MIT"
 
@@ -14,7 +14,7 @@ license = "MIT"
 
 [dependencies]
 ordered_hashmap = "0.0.3"
-render_macros = { path = "../render_macros", version = "0.4.0" }
+html-codegen-macros = { path = "../html-codegen-macros", version = "0.1.0" }
 
 [dev-dependencies]
 pretty_assertions = "1.4"

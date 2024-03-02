@@ -1,4 +1,4 @@
-use render::{component, html, rsx};
+use html_codegen::{component, html, rsx};
 
 #[component]
 fn Heading<'title>(title: &'title str) {

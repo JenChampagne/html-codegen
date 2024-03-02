@@ -131,13 +131,13 @@ impl<'a> ToTokens for SimpleElementAttributes<'a> {
                     let value = attribute.value_tokens();
 
                     quote! {
-                        hm.insert(#ident, ::render::ToAttribute::from_value(#value).into());
+                        hm.insert(#ident, ::html_codegen::ToAttribute::from_value(#value).into());
                     }
                 })
                 .collect();
 
             let hashmap_declaration = quote! {{
-                let mut hm = ::render::OrderedHashMap::<&str, ::render::AV<'_>>::new();
+                let mut hm = ::html_codegen::OrderedHashMap::<&str, ::html_codegen::AV<'_>>::new();
                 #(#attrs)*
                 Some(hm)
             }};

@@ -5,7 +5,7 @@ use std::fmt::{self, Write};
 /// This is the underlying mechanism of the `#[component]` macro
 pub trait Render: Sized {
     /// Render the component to a writer.
-    /// Make sure you escape html correctly using the `render::html_escaping` module
+    /// Make sure you escape html correctly using the `html_codegen::html_escaping` module
     fn render_into<W: Write>(self, writer: &mut W) -> fmt::Result;
 
     /// Render the component to string

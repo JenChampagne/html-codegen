@@ -7,8 +7,8 @@ use std::fmt::{Result, Write};
 ///
 /// ```rust
 /// # use pretty_assertions::assert_eq;
-/// # use render::html::HTML5Doctype;
-/// # use render::html;
+/// # use html_codegen::html::HTML5Doctype;
+/// # use html_codegen::html;
 /// # let result =
 /// html! {
 ///     <>

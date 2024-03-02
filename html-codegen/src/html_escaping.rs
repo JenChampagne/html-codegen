@@ -4,7 +4,7 @@ use std::fmt::{Result, Write};
 ///
 /// ```rust
 /// # use pretty_assertions::assert_eq;
-/// # use render::html_escaping;
+/// # use html_codegen::html_escaping;
 ///
 /// let mut buf = String::new();
 /// html_escaping::escape_html(r#"<hello world="attribute" />"#, &mut buf).unwrap();

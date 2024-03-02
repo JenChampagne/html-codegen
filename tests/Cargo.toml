@@ -1,15 +1,15 @@
 [package]
-name = "render_tests"
-version = "0.4.0"
-authors = ["Gal Schlezinger <gal@spitfire.co.il>", "Jenifer Champagne <jen@iferc.ca>"]
+name = "html-codegen-tests"
+version = "0.1.0"
+authors = ["Jenifer Champagne <jen@iferc.ca>"]
 edition = "2021"
 publish = false
-repository = "https://github.com/JenChampagne/render.rs"
+repository = "https://github.com/JenChampagne/html-codegen"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-render = { path = "../render" }
+html-codegen = { path = "../html-codegen" }
 
 [dev-dependencies]
 pretty_assertions = "1.4"

@@ -1,4 +1,4 @@
-use render::html;
+use html_codegen::html;
 
 fn main() {
     html! {

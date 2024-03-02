@@ -172,7 +172,7 @@ fn main() {
     }
 
     let function_declaration = format!(
-        "pub fn {}() -> Result<String, core::fmt::Error> {{\n    render::html! {{\n",
+        "pub fn {}() -> Result<String, core::fmt::Error> {{\n    html_codegen::html! {{\n",
         args.function_name.as_deref().unwrap_or("html")
     );
     output.push_str(function_declaration.as_str());

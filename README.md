@@ -40,7 +40,7 @@ In order to render a simple HTML fragment into a `String`, use the `rsx!` macro 
 component tree, and call `render` on it:
 
 ```rust
-use render::{rsx, Render};
+use html_codegen::{rsx, Render};
 
 let tree = rsx! {
   <div>
@@ -57,12 +57,12 @@ a component tree, and then calls `render` on it. Most of the time, you'll find y
 the `rsx!` macro to compose arbitrary components, and only calling `html!` when you need a
 String output, when sending a response or generating a Markdown file.
 
-In Render, attributes and plain strings are escaped using the `render::html_escaping` module. In order to
+In Render, attributes and plain strings are escaped using the `html_codegen::html_escaping` module. In order to
 use un-escaped values so you can dangerously insert raw HTML, use the `raw!` macro around your
 string:
 
 ```rust
-use render::{html, raw};
+use html_codegen::{html, raw};
 
 let tree = html! {
   <div>
@@ -83,7 +83,7 @@ In order to build up components from other components or HTML nodes, you can use
 macro, which generates a `Render` component tree:
 
 ```rust
-use render::{component, rsx, html};
+use html_codegen::{component, rsx, html};
 
 #[component]
 fn Heading<'title>(title: &'title str) {
@@ -135,8 +135,8 @@ your libraries.
 
 ```rust
 // A simple HTML 5 doctype declaration
-use render::html::HTML5Doctype;
-use render::{
+use html_codegen::html::HTML5Doctype;
+use html_codegen::{
     // A macro to create components
     component,
     // A macro to compose components in JSX fashion
