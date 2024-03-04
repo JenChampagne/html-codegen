@@ -178,3 +178,11 @@ pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let f = parse_macro_input!(item as syn::ItemFn);
     function_component::create_function_component(f)
 }
+
+#[proc_macro]
+#[proc_macro_error]
+pub fn html_minified(input: TokenStream) -> TokenStream {
+    let element = parse_macro_input!(input as Element);
+
+    TokenStream::from(element.into_minimized_formatter())
+}
