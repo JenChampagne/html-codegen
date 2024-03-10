@@ -174,7 +174,7 @@ mod text_element;
 
 pub use self::render::Render;
 pub use fragment::Fragment;
-pub use html_codegen_macros::{component, html, rsx};
+pub use html_codegen_macros::{component, html, html_format, html_format_args, rsx};
 pub use ordered_hash_map::OrderedHashMap;
 pub use simple_element::SimpleElement;
 pub use simple_element::{ToAttribute, AV};

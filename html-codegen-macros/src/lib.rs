@@ -181,8 +181,19 @@ pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
 
 #[proc_macro]
 #[proc_macro_error]
-pub fn html_minified(input: TokenStream) -> TokenStream {
+pub fn html_format_args(input: TokenStream) -> TokenStream {
     let element = parse_macro_input!(input as Element);
 
     TokenStream::from(element.into_minimized_formatter())
+}
+
+#[proc_macro]
+#[proc_macro_error]
+pub fn html_format(input: TokenStream) -> TokenStream {
+    let element = parse_macro_input!(input as Element);
+    let args = element.into_minimized_formatter();
+
+    TokenStream::from(quote! {
+        format!("{}", #args)
+    })
 }
