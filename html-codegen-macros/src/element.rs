@@ -56,79 +56,93 @@ impl Element {
             let mut buffer = String::new();
             let mut chunks = Vec::<Chunk>::new();
 
-            let tag_name = element
-                .name
-                .get_ident()
-                .map(|ident| ident.to_string())
-                .expect("valid tag name");
+            let tag_name = element.name.get_ident().map(|ident| ident.to_string()); //.expect("valid tag name");
 
-            buffer.push_str("<");
-            buffer.push_str(tag_name.as_str());
+            if let Some(tag_name) = tag_name.as_deref() {
+                buffer.push_str("<");
+                buffer.push_str(tag_name);
 
-            for attribute in &element.attributes.attributes {
-                //let key = attribute.ident();
+                // todo: ignore, fail, or otherwise handle attrs on empty tag better
 
-                match attribute {
-                    ElementAttribute::Punned(key) => {
-                        let attr_name = key
-                            .clone()
-                            .into_iter()
-                            .map(|ident| format!("{}", ident))
-                            .collect::<String>();
+                for attribute in &element.attributes.attributes {
+                    //let key = attribute.ident();
 
-                        buffer.push_str(" ");
-                        buffer.push_str(attr_name.as_str());
-                    }
-                    ElementAttribute::WithValue(key, block) => {
-                        let attr_name = key
-                            .clone()
-                            .into_iter()
-                            .map(|ident| format!("{}", ident))
-                            .collect::<String>();
+                    match attribute {
+                        ElementAttribute::Punned(key) => {
+                            let attr_name = key
+                                .clone()
+                                .into_iter()
+                                .map(|ident| format!("{}", ident))
+                                .collect::<String>();
 
-                        buffer.push_str(" ");
-                        buffer.push_str(attr_name.as_str());
-                        buffer.push_str("=\"");
+                            buffer.push_str(" ");
+                            buffer.push_str(attr_name.as_str());
+                        }
+                        ElementAttribute::WithValue(key, block) => {
+                            let attr_name = key
+                                .clone()
+                                .into_iter()
+                                .map(|ident| format!("{}", ident))
+                                .collect::<String>();
 
-                        match block.stmts.as_slice() {
-                            [syn::Stmt::Expr(syn::Expr::Lit(syn::ExprLit { lit, .. }), None)] => {
-                                match lit {
-                                    syn::Lit::Str(x) => buffer.push_str(&format!("{}", x.value())),
-                                    syn::Lit::ByteStr(x) => buffer.push_str(&format!(
-                                        "{}",
-                                        String::from_utf8(x.value()).expect("valid bytestr")
-                                    )),
-                                    syn::Lit::Byte(x) => buffer.push_str(&format!("{}", x.value())),
-                                    syn::Lit::Char(x) => buffer.push_str(&format!("{}", x.value())),
-                                    syn::Lit::Int(x) => {
-                                        buffer.push_str(&format!("{}", x.base10_digits()))
+                            buffer.push_str(" ");
+                            buffer.push_str(attr_name.as_str());
+                            buffer.push_str("=\"");
+
+                            match block.stmts.as_slice() {
+                                [syn::Stmt::Expr(syn::Expr::Lit(syn::ExprLit { lit, .. }), None)] => {
+                                    match lit {
+                                        syn::Lit::Str(x) => {
+                                            buffer.push_str(&format!("{}", x.value()))
+                                        }
+                                        syn::Lit::ByteStr(x) => buffer.push_str(&format!(
+                                            "{}",
+                                            String::from_utf8(x.value()).expect("valid bytestr")
+                                        )),
+                                        syn::Lit::Byte(x) => {
+                                            buffer.push_str(&format!("{}", x.value()))
+                                        }
+                                        syn::Lit::Char(x) => {
+                                            buffer.push_str(&format!("{}", x.value()))
+                                        }
+                                        syn::Lit::Int(x) => {
+                                            buffer.push_str(&format!("{}", x.base10_digits()))
+                                        }
+                                        syn::Lit::Float(x) => {
+                                            buffer.push_str(&format!("{}", x.base10_digits()))
+                                        }
+                                        syn::Lit::Bool(x) => {
+                                            buffer.push_str(&format!("{}", x.value()))
+                                        }
+                                        syn::Lit::Verbatim(_) => {}
+                                        _ => {}
                                     }
-                                    syn::Lit::Float(x) => {
-                                        buffer.push_str(&format!("{}", x.base10_digits()))
-                                    }
-                                    syn::Lit::Bool(x) => buffer.push_str(&format!("{}", x.value())),
-                                    syn::Lit::Verbatim(_) => {}
-                                    _ => {}
+                                }
+
+                                _ => {
+                                    // flush buffer as text block, next is expr
+                                    // todo: necessary? if buffer.len() > 0 {
+                                    chunks.push(Chunk::Text(buffer.drain(..).collect()));
+                                    // }
+                                    chunks.push(Chunk::Value(block.clone()));
                                 }
                             }
 
-                            _ => {
-                                // flush buffer as text block, next is expr
-                                chunks.push(Chunk::Text(buffer.drain(..).collect()));
-                                chunks.push(Chunk::Value(block.clone()));
-                            }
+                            buffer.push_str("\"");
                         }
-
-                        buffer.push_str("\"");
                     }
                 }
             }
 
             if element.is_self_closing {
-                // todo: are there really any html elements that should have the closing '/'?
-                buffer.push_str(" />");
+                if tag_name.is_some() {
+                    // todo: are there really any html elements that should have the closing '/'?
+                    buffer.push_str(" />");
+                }
             } else {
-                buffer.push_str(">");
+                if tag_name.is_some() {
+                    buffer.push_str(">");
+                }
 
                 for child in &element.children.nodes {
                     match child {
@@ -203,9 +217,11 @@ impl Element {
                 }
                 // children stuff
 
-                buffer.push_str("</");
-                buffer.push_str(tag_name.as_str());
-                buffer.push_str(">");
+                if let Some(tag_name) = tag_name.as_deref() {
+                    buffer.push_str("</");
+                    buffer.push_str(tag_name);
+                    buffer.push_str(">");
+                }
             }
 
             chunks.push(Chunk::Text(buffer));
