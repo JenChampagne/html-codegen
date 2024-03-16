@@ -1,8 +1,8 @@
 [workspace]
 resolver = "2"
 members = [
-    "html-codegen",
-    "html-codegen-macros",
+    "lib",
+    "macros",
     "tests",
-    "html2rust",
+    "cli/html2rust",
 ]

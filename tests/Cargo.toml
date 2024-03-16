@@ -9,7 +9,7 @@ repository = "https://github.com/JenChampagne/html-codegen"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-html-codegen = { path = "../html-codegen" }
+html-codegen = { path = "../lib" }
 
 [dev-dependencies]
 pretty_assertions = "1.4"

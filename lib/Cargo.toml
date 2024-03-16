@@ -1,27 +1,20 @@
 [package]
-name = "html-codegen-macros"
+name = "html-codegen"
 version = "0.1.0"
 authors = ["Jenifer Champagne <jen@iferc.ca>"]
 edition = "2021"
-description = "The macros needed for `html-codegen`"
+description = "A safe and simple template engine with the ergonomics of JSX"
 readme = "../README.md"
 repository = "https://github.com/JenChampagne/html-codegen"
 keywords = ["jsx", "rsx", "html", "codegen", "template"]
-categories = []
+categories = ["template-engine"]
 license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[lib]
-proc-macro = true
-
 [dependencies]
-syn = { version = "2.0", features = ["full"] }
-quote = "1.0"
-proc-macro2 = "1.0"
-proc-macro-error = "1.0"
 ordered_hash_map = "0.4.0"
+html-codegen-macros = { path = "../macros", version = "0.1.0" }
 
 [dev-dependencies]
-html-codegen = { path = "../html-codegen", version = "*" }
 pretty_assertions = "1.4"
