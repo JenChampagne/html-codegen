@@ -1,0 +1,17 @@
+[package]
+name = "rocket-example"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# The `dylibload` feature is only necessary for dynamic loading of an external
+# html crate for faster build times.
+html-codegen = { version = "0.1.0", path = "../../lib", features = ["dylibload"] }
+
+# The separated crate is still listed here both to load any necessary custom
+# types, as well as for when building statically in release mode.
+example-html = { path = "../html" }
+
+rocket = "0.5.0"

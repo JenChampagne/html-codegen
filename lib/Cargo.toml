@@ -12,9 +12,15 @@ license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+default = []
+dylibload = ["dep:libloading"]
+
 [dependencies]
 ordered_hash_map = "0.4.0"
 html-codegen-macros = { path = "../macros", version = "0.1.0" }
+libloading = { version = "0.8.3", optional = true }
 
 [dev-dependencies]
 pretty_assertions = "1.4"
+

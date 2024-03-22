@@ -172,9 +172,14 @@ mod render;
 mod simple_element;
 mod text_element;
 
+#[cfg(feature = "dylibload")]
+pub mod dylibload;
+
 pub use self::render::Render;
 pub use fragment::Fragment;
-pub use html_codegen_macros::{component, html, html_format, html_format_args, rsx};
+pub use html_codegen_macros::{
+    self as macros, component, html, html_format, html_format_args, rsx,
+};
 pub use ordered_hash_map::OrderedHashMap;
 pub use simple_element::SimpleElement;
 pub use simple_element::{ToAttribute, AV};

@@ -2,6 +2,7 @@ extern crate proc_macro;
 
 mod child;
 mod children;
+mod dylibload;
 mod element;
 mod element_attribute;
 mod element_attributes;
@@ -12,7 +13,10 @@ use element::Element;
 use proc_macro::TokenStream;
 use proc_macro_error::proc_macro_error;
 use quote::quote;
-use syn::parse_macro_input;
+use syn::{
+    parse::{Parse, ParseStream},
+    parse_macro_input, Ident, ItemFn, LitStr,
+};
 
 /// Render a component tree to an HTML string, using XML-like tags.
 ///
@@ -196,4 +200,34 @@ pub fn html_format(input: TokenStream) -> TokenStream {
     TokenStream::from(quote! {
         format!("{}", #args)
     })
+}
+
+/// Function attribute macro that wraps the attached function with
+/// another function that when run in a debug build, will attempt to
+/// load the named dylib crate at runtime, but when run in a release
+/// build, will bundle the crate method statically.
+///
+/// This is useful for repaid development so that a separate lightweight
+/// crate can recompile quickly without needing to recompile the remaining
+/// application, such as an API server.
+#[proc_macro_attribute]
+pub fn dylibload(attr: TokenStream, item: TokenStream) -> TokenStream {
+    //let scope = parse_macro_input!(attr as Ident);
+    let input = parse_macro_input!(item as ItemFn);
+
+    let attr = parse_macro_input!(attr as Temp); // syn::parse::::from(attr.into());
+
+    dylibload::wrap_dylibload_function(attr.0, attr.1, input)
+}
+
+struct Temp(Ident, LitStr);
+
+impl Parse for Temp {
+    fn parse(input: ParseStream) -> Result<Self, syn::parse::Error> {
+        let scope = input.parse::<Ident>()?;
+        input.parse::<syn::Token![,]>()?;
+        let scope_target_dir = input.parse::<syn::LitStr>()?;
+
+        Ok(Self(scope, scope_target_dir))
+    }
 }

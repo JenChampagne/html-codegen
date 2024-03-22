@@ -1,0 +1,15 @@
+[package]
+name = "example-html"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+# Required to build as a dynamically loadable library.
+# This doesn't stop the main application from loading the crate statically.
+crate-type = ["dylib"]
+
+[dependencies]
+html-codegen = { version = "0.1.0", path = "../../lib" }
+

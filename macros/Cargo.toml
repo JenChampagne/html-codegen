@@ -23,5 +23,6 @@ proc-macro-error = "1.0"
 ordered_hash_map = "0.4.0"
 
 [dev-dependencies]
-html-codegen = { path = "../lib", version = "*" }
+html-codegen = { path = "../lib", features = ["dylibload"] }
+example-html = { path = "../example/html" }
 pretty_assertions = "1.4"

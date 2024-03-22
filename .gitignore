@@ -1,3 +1,5 @@
 target
+example/target
+example/html/target
 **/*.rs.bk
 .DS_Store

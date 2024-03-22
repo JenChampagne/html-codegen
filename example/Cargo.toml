@@ -1,0 +1,14 @@
+[workspace]
+resolver = "2"
+members = [
+    "api-axum",
+    "api-rocket",
+]
+exclude = [
+    # The dynamic html crate being excluded helps prevent recompilation
+    # delays caused by waiting for a lock on the shared target folder.
+    #
+    # The run.sh script is used to compile this in parallel with the rest.
+    "html",
+]
+

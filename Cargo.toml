@@ -6,3 +6,6 @@ members = [
     "tests",
     "cli/html2rust",
 ]
+exclude = [
+    "example/**/*"
+]

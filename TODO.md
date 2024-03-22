@@ -1,10 +1,7 @@
 - Update documentation.
 - Add clear examples.
-- Try to make attributes list more deterministic or drop OrderedHashMap.
-- Decide whether to rename crate to upload to crates.io.
-- Make derive macro to generate impl ToAttribute from T: Display for type T.
-- Make Raw generic over T: Display.
-  - Does this ruin Raw used not for attributes.
+- Rebase with TODO.md removal and LICENSE update from point of fork.
+- make dylibload feature flaggable
 
 TO PUBLISH
 - update docs
@@ -13,3 +10,9 @@ TO PUBLISH
 - update crate descriptions
 - don't push cli tool yet
 - see is macros can be included without needing to publish other crate
+
+
+- make api-rocket not watch html crate
+- html crate needs a dynamic version appended, preferably in target dir
+- make easy run scripts
+
